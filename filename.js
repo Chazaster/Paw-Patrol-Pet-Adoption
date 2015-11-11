@@ -4,25 +4,23 @@ var petFinder = {};
 
 	function toScreen(data){
 		console.log(data);
-		alert(data.petfinder.petIds.id.$t);
+		$.each(data.petfinder.pets.pet, function(index, photo){
+			photo = "<img src=\""+ photo.media.photos.photo[3].$t + "\" />";
+			$('#photos').append(photo);
+		});
 	}
 	
 	function search(){
-		var url = "http://api.petfinder.com/pet.getRandom?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b&callback=?";
+		var url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + "&callback=?";
 		$.getJSON(url, toScreen);
 	}
 	
 	petFinder.search = search;
+	var location = '&location=94928';
+	var animal = '&animal=dog';
+	var breed = '&breed=German Shepherd Dog';
+	var sex = '&sex=M';
+	var age = '&age=Baby';
 })();
 
 petFinder.search();
-
-
-
-
-
-/*$.getJSON('http://api.petfinder.com/pet.getRandom?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b&callback=?')
-  .done(function(petApiData) { alert("hey"); })
-  .error(function(err) { alert('Error retrieving data!'); 
-});
-*/
