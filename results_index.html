@@ -44,27 +44,13 @@
 			margin: 10% 10%;
 	
 			/*stacking fieldsets above each other*/
-			/*position: absolute;*/
+			position: absolute;
 		}
-		/*Hide all except first fieldset
+		
 		#msform fieldset:not(:first-of-type) {
 			display: none;
 		}
-		*/
-		#msform #day {
-			background: white;
-			border: 0 white;
-			border-radius: 3px;
-			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-			padding: 20px 70px;
-			
-			box-sizing: border-box;
-			width: 80%;
-			margin: 10% 10%;
-	
-			/*stacking fieldsets above each other*/
-			/*position: absolute;*/
-		}
+		
 		/*inputs*/
 		#msform input, #msform textarea {
 			padding: 15px;
@@ -89,9 +75,11 @@
 			padding: 10px 5px;
 			margin: 10px 5px;
 		}
+		
 		#msform .action-button:hover, #msform .action-button:focus {
 			box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
 		}
+		
 		#msform .action-button1 {
 			width: 100px;
 			background: #E67802;
@@ -103,32 +91,11 @@
 			padding: 10px 5px;
 			margin: 10px 5px;
 		}
+		
 		#msform .action-button1:hover, #msform .action-button:focus {
 			box-shadow: 0 0 0 2px white, 0 0 0 3px #E67802;
 		}
-		/*Pet result display*/
-		/*Pet of the day stuff*/
-		#msday {
-			width: 800px;
-			margin: 50px auto;
-			text-align: center;
-			position: relative;
-		}
-		#msday fieldset {
-			background: white;
-			border: 0 none;
-			border-radius: 3px;
-			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-			padding: 20px 30px;
 	
-			box-sizing: border-box;
-			width: 80%;
-			margin: 0 10%;
-	
-			/*stacking fieldsets above each other*/
-			position: absolute;
-		}
-		/*headings*/
 		.fs-title {
 			font-size: 15px;
 			text-transform: uppercase;
@@ -141,103 +108,65 @@
 			color: #665;
 			margin-bottom: 20px;
 		}
-		/*progressbar*/
-		#progressbar {
-			margin-bottom: 30px;
-			overflow: hidden;
-			/*CSS counters to number the steps*/
-			counter-reset: step;
-		}
-		#progressbar li {
-			list-style-type: none;
-			color: white;
-			text-transform: uppercase;
-			font-size: 10px;
-			/*width: 33.33%;*/
-			width:20%;
-			float: left;
-			position: relative;
-		}
-		#progressbar li:before {
-			content: counter(step);
-			counter-increment: step;
-			width: 30px;
-			line-height: 20px;
-			display: block;
-			font-size: 10px;
-			color: #333;
-			background: white;
-			border-radius: 3px;
-			margin: 0 auto 5px auto;
-		}	
-		/*progressbar connectors*/
-		#progressbar li:after {
-			content: '';
-			width: 100%;
-			height: 2px;
-			background: white;
-			position: absolute;
-			left: -50%;
-			top: 9px;
-			z-index: -1; /*put it behind the numbers*/
-		}
-		#progressbar li:first-child:after {
-			/*connector not needed before the first step*/
-			content: none; 
-		}
-		/*marking active/completed steps green*/
-		/*The number of the step and the connector before it = green*/
-		#progressbar li.active:before,  #progressbar li.active:after{
-			background: #27AE60;
-			color: white;
-		}
+		
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 	
 <body>
-	
-	<!-- multistep form -->
 	<form id="msform">
-	<fieldset id="result">
-		<h2 class="fs-title">Name of animal</h2>
-		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "300" height = "300" />
-		<input type="button" name="previous" class="previous action-button" value="Previous" />
-		<input type="button" name="profile" class="next action-button1" value="Profile" />
-		<input type="button" name="next" class="next action-button" value="Next" />
-	</fieldset>
-	<fieldset id="day">
-		<div class="content"> </div>
-		<div class="loader"></div>
-		<h2 class="fs-title">Pet Of The Day</h2>
-		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "80" height = "80" />
-		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "80" height = "80" />
-		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "80" height = "80" />
-	</fieldset>
-	<!--div for pet of the day-->
-	<!--<div id="footer">
-		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "80" height = "80" />
-	</div>
--->
-</form>
+
+
+	</form>
 
 <!-- jQuery -->
 <script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
 <!-- jQuery easing plugin -->
 <script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
-</body>
+
 	<script type="text/javascript">
 
+	var petFinder = {};
+
+	(function () {
+
+	function toScreen(data){
+		$.each(data.petfinder.pets.pet, function(index, photo){
+			$("#msform").append("<fieldset id=\"result\"><h2 class=\"fs-title\">" + photo.name.$t + "</h2><img id=\"imageId\" src = \"" + photo.media.photos.photo[3].$t + "\" alt = \"Paw Patrol Logo\" width = \"300\" height = \"300\" /><input type=\"button\" name=\"previous\" class=\"previous action-button\" value=\"Previous\" /><button type=\"button\" class=\"btn btn-success\" data-toggle=\"collapse\" data-target=\"#demo\"><span class=\"glyphicon glyphicon-collapse-down\"></span>Profile</button><input type=\"button\" name=\"next\" class=\"next action-button\" value=\"Next\" /><div id=\"demo\" class \"collapse\">" + photo.description.$t + "</div></fieldset>");
+		});
+	}
+	
+	function search(){
+		var url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + "&callback=?";
+		$.getJSON(url, toScreen);
+	}
+	
+	var location = '&location=94928';
+	var animal = '&animal=dog';
+	var breed = '&breed=German Shepherd Dog';
+	var sex = '&sex=M';
+	var age = '&age=Baby';
+	
+	petFinder.search = search;
+	})();
+
+	petFinder.search();
 
 		//jQuery time
 		var current_fs, next_fs, previous_fs; //fieldsets
 		var left, opacity, scale; //fieldset properties which we will animate
 		var animating; //flag to prevent quick multi-click glitches
 
+
 		$(".next").click(function(){
 			if(animating) return false;
 			animating = true;
+
+
 	
 			current_fs = $(this).parent();
 			next_fs = $(this).parent().next();
@@ -304,11 +233,6 @@
 				easing: 'easeInOutBack'
 			});
 		});
-
-		$(".submit").click(function(){
-   			window.location.href = 'results_index.html';
-    		return false;
-		});
-
 	</script>
+</body>
 </html>
