@@ -1,155 +1,447 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+<head>
+	<title>Paw Patrol</title>
+	<meta charset="utf-8"/>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    	/*custom font*/
+		@import url(http://fonts.googleapis.com/css?family=Montserrat);
+		/*basic reset*/
+		* {margin: 0; padding: 0;}
+		html {
+			height: 100%;
+			/*Image only BG fallback*/
+			background: url('black.jpg');
+			/*background = gradient + image pattern combo*/
+			background: 
+			linear-gradient(rgba(196, 102, 0, 0.2), rgba(155, 89, 182, 0.2)), 
+			url('black.jpg');
+		}
+		body {
+			font-family: montserrat, arial, verdana;
+		}
+		/*form styles*/
+		#msform {
+			width: 550px;
+			margin: 50px auto;
+			text-align: center;
+			position: relative;
+		}
+		#msform fieldset {
+			background: white;
+			border: 0 none;
+			border-radius: 3px;
+			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+			padding: 20px 30px;
+	
+			box-sizing: border-box;
+			width: 80%;
+			margin: 0 10%;
+	
+			/*stacking fieldsets above each other*/
+			position: absolute;
+		}
+		/*Hide all except first fieldset*/
+		#msform fieldset:not(:first-of-type) {
+			display: none;
+		}
+		/*inputs*/
+		#msform input, #msform textarea {
+			padding: 15px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			margin-bottom: 10px;
+			width: 100%;
+			box-sizing: border-box;
+			font-family: montserrat;
+			color: #2C3E50;
+			font-size: 13px;
+		}	
+		/*buttons*/
+		#msform .action-button {
+			width: 100px;
+			background: #27AE60;
+			font-weight: bold;
+			color: white;
+			border: 0 none;
+			border-radius: 1px;
+			cursor: pointer;
+			padding: 10px 5px;
+			margin: 10px 5px;
+		}
+		#msform .action-button:hover, #msform .action-button:focus {
+			box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+		}
+		#msform .action-button1 {
+			width: 100px;
+			background: #E67802;
+			font-weight: bold;
+			color: white;
+			border: 0 none;
+			border-radius: 1px;
+			cursor: pointer;
+			padding: 10px 5px;
+			margin: 10px 5px;
+		}
+		#msform .action-button1:hover, #msform .action-button:focus {
+			box-shadow: 0 0 0 2px white, 0 0 0 3px #E67802;
+		}
+		/*Pet result display*/
+		/*Pet of the day stuff*/
+		#msday {
+			width: 800px;
+			margin: 50px auto;
+			text-align: center;
+			position: relative;
+		}
+		#msday fieldset {
+			background: white;
+			border: 0 none;
+			border-radius: 3px;
+			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+			padding: 20px 30px;
+	
+			box-sizing: border-box;
+			width: 80%;
+			margin: 0 10%;
+	
+			/*stacking fieldsets above each other*/
+			position: absolute;
+		}
+		/*headings*/
+		.fs-title {
+			font-size: 15px;
+			text-transform: uppercase;
+			color: #2C3E50;
+			margin-bottom: 10px;
+		}
+		.fs-subtitle {
+			font-weight: normal;
+			font-size: 13px;
+			color: #665;
+			margin-bottom: 20px;
+		}
+		/*progressbar*/
+		#progressbar {
+			margin-bottom: 30px;
+			overflow: hidden;
+			/*CSS counters to number the steps*/
+			counter-reset: step;
+		}
+		#progressbar li {
+			list-style-type: none;
+			color: white;
+			text-transform: uppercase;
+			font-size: 10px;
+			/*width: 33.33%;*/
+			width:20%;
+			float: left;
+			position: relative;
+		}
+		#progressbar li:before {
+			content: counter(step);
+			counter-increment: step;
+			width: 30px;
+			line-height: 20px;
+			display: block;
+			font-size: 10px;
+			color: #333;
+			background: white;
+			border-radius: 3px;
+			margin: 0 auto 5px auto;
+		}	
+		/*progressbar connectors*/
+		#progressbar li:after {
+			content: '';
+			width: 100%;
+			height: 2px;
+			background: white;
+			position: absolute;
+			left: -50%;
+			top: 9px;
+			z-index: -1; /*put it behind the numbers*/
+		}
+		#progressbar li:first-child:after {
+			/*connector not needed before the first step*/
+			content: none; 
+		}
+		/*marking active/completed steps green*/
+		/*The number of the step and the connector before it = green*/
+		#progressbar li.active:before,  #progressbar li.active:after{
+			background: #27AE60;
+			color: white;
+		}
+    </style>
 
-	<head>
-		<meta charset="utf-8">
-		<title>Paw Patrol Pet Adoption</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<!-- multistep form -->
+	<form id="msform" method="GET" action="">
+	<!-- progressbar -->
+	<ul id="progressbar">
+		<li class="active">Location</li>
+		<li>Type</li>
+		<li>Breed</li>
+		<li>Gender</li>
+		<li>Age</li>
+	</ul>
+	<!-- fieldsets -->
+	<fieldset>
+		<h2 class="fs-title">Location</h2>
+		<h3 class="fs-subtitle">Where?</h3>
+		<input type="text" class="location" value='' placeholder="Ex: Rohnert Park,CA or 94928"/>
+		<!-- input type="button" name="previous" class="previous action-button" value="Previous" /-->
+		<input type="button" name="next" class="next action-button" value="Next" />
+	</fieldset>
+	<fieldset>
+		<h2 class="fs-title">Type</h2>
+		<h3 class="fs-subtitle">Which type of pet are you looking for?</h3>
+		<input type="button" class="type" value="Dog"/>
+		<input type="button" class="type" value="Cat"/>
+		<input type="button" class="type" value="Rabbit"/>
+		<input type="button" class="type" value="Bird"/>
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
+		<input type="button" name="next" class="next action-button" value="Next" />
+	</fieldset>
+	<fieldset>
+		<h2 class="fs-title">Breed</h2>
+		<h3 class="fs-subtitle">What breed?</h3>
+		<input type="text" class="breed" value='' placeholder="Breed"/>
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
+		<input type="button" name="next" class="next action-button" value="Next" />
+	</fieldset>
+	<fieldset>
+		<h2 class="fs-title">Gender</h2>
+		<h3 class="fs-subtitle">Male or Female ?</h3>
+		<input type="button" class="sex" value="M"/>
+		<input type="button" class="sex" value="F"/>
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
+		<input type="button" name="next" class="next action-button" value="Next" />
+	</fieldset>
+		<fieldset>
+		<h2 class="fs-title">Age</h2>
+		<h3 class="fs-subtitle"></h3>
+		<input type="button" class="age" name="baby" value="Baby"/>
+		<input type="button" class="age"name="young" value="Young"/>
+		<input type="button" class="age"name="adult" value="Adult"/>
+		<input type="button" class="age"name="senior" value="Senior"/>
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
+		<input type="button" name="submit" id="submit" class="submit action-button" value="Submit" />
+	</fieldset>
+	<!--fieldset>
+		<h2 class="fs-title">Name of animal goes here</h2>
+		<h3 class="fs-subtitle">Type of animal goes here (type of animal and breed)</h3>
+		<img src = "pawpatrol.jpeg" alt = "Paw Patrol Logo" width = "300" height = "300" />
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
+		<input type="button" name="profile" class="next action-button1" value="Profile" />
+		<input type="button" name="next" class="next action-button" value="Next" />
+	</fieldset-->
+	<!--fieldset for pet of the day-->
+</form>
 
-		<!-- stylesheets -->
-		<!-- <link rel="stylesheet" href="dist/css/myplugin.css" type="text/css"> -->
-		<link rel="stylesheet" href="assets/css/custom.css" type="text/css">
-		<style type="text/css">
-			/* Responsive images */
-			img {
-				max-width: 100%;
-				height: auto;
-			}
-			/*  Sets body width */
-			body {
-				max-width: 40em;
-				width: 88%;
-				margin-left: auto;
-				margin-right: auto;
-			}
-			#pf-api-data {
-				background-color: #f7f7f7;
-				margin-bottom: 1.5625em;
-				padding: 0.9375em;
-				border: 0.0725em solid #e5e5e5;
-				border-radius: 0.0725em;
-			}
-			label,
-			input {
-				display: inline-block;
-				width: 100%;
-			}
-			input {
-				margin-bottom: 1.5635em;
-			}
-			input[type="checkbox"] {
-				margin-bottom: 0;
-				width: auto;
-			}
-		</style>
-	</head>
+<!-- jQuery -->
+<script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<!-- jQuery easing plugin -->
+<script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
+<script type="text/javascript" >
+	$( document ).ready(function() {
+		// this loads everything up once the page loads so we can make sure all elements are available before the code runs.
+		
+		//then set all your variables here outside of the function so you can access them and write to them with different 
+		var location = '';
+		var animal = '';
+		var breed = '&breed=German Shepherd Dog';
+		var sex = '';
+		var url = '';
+		var age = '';
+		$('.submit').on('click', function(event){
+			//resets the photo element so that you are getting only the selected results
+			$('#photos').html('');
+			var petFinder = {};
+		
+(function(){
+	function toScreen(data){
+		console.log(data);
+		
+		$.each(data.petfinder.pets.pet, function(index, photo, name){
+			
 
-	<body>
 
-		<main>
+			$('#photos').append("<img src="+ photo.media.photos.photo[3].$t + " />");
+			$('#photos').append(photo.name.$t);
 
-			<nav>
-				<h1>Paw Patrol Pet Adoption</h1>
-				
-				<hr>
-			</nav>
+		});
+	}
+	
+	function search(){		
+		 url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + "&callback=?";
+		 //alert can be commented, it's just to show that the variable is truly set correctly
+		 //alert(url);
+		$.getJSON(url, toScreen);
+	}
+	
+	petFinder.search = search;
+	
+})();
 
-			<section>
-<div id="pf-api-data">
-    <p>Your browser does not support the JavaScript APIs required to use this script. Sorry.</p>
+petFinder.search();
+		});
+		
+
+	$('.age').on('click', function(event){
+		age = '&age='+$(this).val();
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(age);
+	    });
+	
+	$('.sex').on('click', function(event){
+		sex = '&sex='+$(this).val();
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(sex);
+	    });
+
+	$('.type').on('click', function(event){
+		animal = '&type='+$(this).val();
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+
+	$('.location').on('keyup', function(event){
+		location = '&location='+$(this).val();
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(location);
+	    });
+	$('.breed').on('keyup', function(event){
+		location = '&breed=German Shepherd Dog';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(breed);
+	    });
+
+
+
+
+     });
+
+</script>
+
+
+<div id='photos'>
 </div>
 
-<div data-petfinder-app="aside"></div>
-<div data-petfinder-app="main"></div>
-
-<div data-petfinder-template="all" hidden>
-    <div class="{{classes}}">
-        <div data-petfinder-img-container>
-            <img src="{{photo.1.medium}}">
-        </div>
-        <h2>{{name}}</h2>
-        <p><a data-petfinder-async href="{{url.pet}}">View Full Profile</a></p>
-        <hr>
-    </div>
-</div>
-
-<div data-petfinder-template="one" hidden>
-    <p><a data-petfinder-async href="{{url.all}}">&larr; Back to Full List</a></p>
-    <div data-petfinder-img-container>
-        <div data-petfinder-img></div>
-        <p>
-            <a data-petfinder-img-toggle="{{photo.1.large}}" href="#"><img src="{{photo.1.thumbnail.large}}"></a>&nbsp;
-            <a data-petfinder-img-toggle="{{photo.2.large}}" href="#"><img src="{{photo.2.thumbnail.large}}"></a>&nbsp;
-            <a data-petfinder-img-toggle="{{photo.3.large}}" href="#"><img src="{{photo.3.thumbnail.large}}"></a>
-        </p>
-    </div>
-    <h2>{{name}}</h2>
-    <p>
-        Age: {{age}}<br>
-        Gender: {{gender}}<br>
-        Size: {{size}}
-    </p>
-    <div>{{description}}</div>
-</div>
-
-<div data-petfinder-template="aside-all" hidden>
-    <strong>Age:</strong>
-    {{checkbox.ages.toggle}}
-
-    <strong>Size:</strong>
-    {{checkbox.sizes}}
-
-    <strong>Gender:</strong>
-    {{checkbox.genders}}
-
-    <strong>Breeds:</strong>
-    {{checkbox.breeds.toggle}}
-</div>
-			</section>
-		</main>
-
-		<!-- Javascript -->
-		<script src="petfinderAPI4everybody.js"></script>
-		<script src="petfinderSort.js"></script>
-		<script src="petfinderImgToggle.js"></script>
-		<script>
-			;(function (window, document, undefined) {
-				'use strict';
-				// Feature test
-				var supports = !!document.querySelector && !!window.addEventListener && !!window.localStorage && !!Array.prototype.indexOf;
-				if ( !supports ) return;
-				// Create form for demo page
-				var apiData = document.querySelector( '#pf-api-data' );
-				var form =
-					'<form>' +
-						'<div>' +
-							'<label for="key">Developer Key </label>' +
-							'<input name="key" id="pf-api-key" type="text" value="326aa49dbfec3060d0ebec0d9ff3359b">' +
-						'</div>' +
-						'<div>' +
-							'<label for="shelter-id">Shelter ID</label>' +
-							'<input name="shelter-id" id="pf-shelter-id" type="text" value="RI77">' +
-						'</div>' +
-					'</form>' +
-					'<button id="pf-fetch-api">Fetch API Data</button>';
-				apiData.innerHTML = form;
-				// Fetch API Data when form button is clicked
-				var submit = document.querySelector( '#pf-fetch-api' );
-				submit.addEventListener( 'click', function () {
-					var key = document.querySelector( '#pf-api-key' ).value;
-					var shelter = document.querySelector( '#pf-shelter-id' ).value;
-					petfinderAPI.init({
-						key: key,
-						shelter: shelter,
-						callback: function () {
-							petfinderSort.init();
-							petfinderImgToggle.init();
-						}
-					});
-				}, false);
-			})(window, document);
-		</script>
 
 
-	</body>
+</body>
+
+	<script type="text/javascript" >
+
+		//jQuery time
+		var current_fs, next_fs, previous_fs; //fieldsets
+		var left, opacity, scale; //fieldset properties which we will animate
+		var animating; //flag to prevent quick multi-click glitches
+
+		$(".next").click(function(){
+			if(animating) return false;
+			animating = true;
+
+			
+	
+			current_fs = $(this).parent();
+			next_fs = $(this).parent().next();
+	
+			//activate next step on progressbar using the index of next_fs
+			$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+	
+			//show the next fieldset
+			next_fs.show(); 
+			//hide the current fieldset with style
+			current_fs.animate({opacity: 0}, {
+				step: function(now, mx) {
+					//as the opacity of current_fs reduces to 0 - stored in "now"
+					//1. scale current_fs down to 80%
+					scale = 1 - (1 - now) * 0.2;
+					//2. bring next_fs from the right(50%)
+					left = (now * 50)+"%";
+					//3. increase opacity of next_fs to 1 as it moves in
+					opacity = 1 - now;
+					current_fs.css({'transform': 'scale('+scale+')'});
+					next_fs.css({'left': left, 'opacity': opacity});
+				}, 
+				duration: 800, 
+				complete: function(){
+					current_fs.hide();
+					animating = false;
+				}, 
+				//this comes from the custom easing plugin
+				easing: 'easeInOutBack'
+			});
+		});
+		$(".previous").click(function(){
+			if(animating) return false;
+			animating = true;
+	
+			current_fs = $(this).parent();
+			previous_fs = $(this).parent().prev();
+	
+			//de-activate current step on progressbar
+			$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+	
+			//show the previous fieldset
+			previous_fs.show(); 
+			//hide the current fieldset with style
+			current_fs.animate({opacity: 0}, {
+				step: function(now, mx) {
+					//as the opacity of current_fs reduces to 0 - stored in "now"
+					//1. scale previous_fs from 80% to 100%
+					scale = 0.8 + (1 - now) * 0.2;
+					//2. take current_fs to the right(50%) - from 0%
+					left = ((1-now) * 50)+"%";
+					//3. increase opacity of previous_fs to 1 as it moves in
+					opacity = 1 - now;
+					current_fs.css({'left': left});
+					previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+				}, 
+				duration: 800, 
+				complete: function(){
+					current_fs.hide();
+					animating = false;
+				}, 
+				//this comes from the custom easing plugin
+				easing: 'easeInOutBack'
+			});
+		});
+		$(".submit").click(function(){
+   			if(animating) return false;
+			animating = true;
+	
+			current_fs = $(this).parent();
+			next_fs = $(this).parent().next();
+	
+			//show the next fieldset
+			next_fs.show(); 
+			//hide the current fieldset with style
+			current_fs.animate({opacity: 0}, {
+				step: function(now, mx) {
+					//as the opacity of current_fs reduces to 0 - stored in "now"
+					//1. scale current_fs down to 80%
+					scale = 1 - (1 - now) * 0.2;
+					//2. bring next_fs from the right(50%)
+					left = (now * 50)+"%";
+					//3. increase opacity of next_fs to 1 as it moves in
+					opacity = 1 - now;
+					current_fs.css({'transform': 'scale('+scale+')'});
+					next_fs.css({'left': left, 'opacity': opacity});
+				}, 
+				duration: 800, 
+				complete: function(){
+					current_fs.hide();
+					animating = false;
+				}, 
+				//this comes from the custom easing plugin
+				easing: 'easeInOutBack'
+			});
+		});
+	</script>
 </html>
