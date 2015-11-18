@@ -179,7 +179,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+   	
 </head>
 <body>
 	<!-- multistep form -->
@@ -235,7 +236,7 @@
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="submit" id="submit" class="submit action-button" value="Submit" />
 	</fieldset>
-	<fieldset id="result">
+	<fieldset id="result" form="msform">
 		
 	</fieldset>
 	<!--fieldset for pet of the day-->
@@ -252,7 +253,7 @@
 		//then set all your variables here outside of the function so you can access them and write to them with different 
 		var location = '';
 		var animal = '';
-		var breed = '&breed=German Shepherd Dog';
+		var breed = '';
 		var sex = '';
 		var url = '';
 		var age = '';
@@ -265,6 +266,7 @@
 	function toScreen(data){
 		$.each(data.petfinder.pets.pet, function(index, photo){
 			$("#msform").append("<fieldset id=\"result\"><h2 class=\"fs-title\">" + photo.name.$t + "</h2><img id=\"imageId\" src = \"" + photo.media.photos.photo[3].$t + "\" alt = \"Paw Patrol Logo\" width = \"300\" height = \"300\" /><input type=\"button\" name=\"previous\" class=\"previous action-button\" value=\"Previous\" /><button type=\"button\" class=\"btn btn-success\" data-toggle=\"collapse\" data-target=\"#demo\"><span class=\"glyphicon glyphicon-collapse-down\"></span>Profile</button><input type=\"button\" name=\"next\" class=\"next action-button\" value=\"Next\" /><div id=\"demo\" class \"collapse\">" + photo.description.$t + "</div></fieldset>");
+
 		});
 	}
 	
@@ -308,7 +310,7 @@ petFinder.search();
 	    });
 
 	$('.breed').on('keyup', function(event){
-		location = '&breed=German Shepherd Dog';
+		breed = '&breed='+$(this).val();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(breed);
 	    });
@@ -329,6 +331,7 @@ petFinder.search();
 </body>
 
 	<script type="text/javascript" >
+
 
 		//jQuery time
 		var current_fs, next_fs, previous_fs; //fieldsets
