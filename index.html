@@ -188,7 +188,7 @@
   			border-radius: 5px;
   			background: white;
   			padding: 5px;
-  			padding-bottom: 60px;
+  			padding-bottom: 65px;
   			margin: 5px;
   			box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 		}
@@ -222,10 +222,10 @@
 	<fieldset>
 		<h2 class="fs-title">Type</h2>
 		<h3 class="fs-subtitle">Which type of pet are you looking for?</h3>
-		<input type="button" class="type" value="Dog"/>
-		<input type="button" class="type" value="Cat"/>
-		<input type="button" class="type" value="Rabbit"/>
-		<input type="button" class="type" value="Bird"/>
+		<input type="button" class="Dog" value="Dog"/>
+		<input type="button" class="Cat" value="Cat"/>
+		<input type="button" class="Rabbit" value="Rabbit"/>
+		<input type="button" class="Bird" value="Bird"/>
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
@@ -299,7 +299,7 @@
 	function search(){		
 		 url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + "&callback=?";
 		 //alert can be commented, it's just to show that the variable is truly set correctly
-		 //alert(url);
+		 alert(url);
 		$.getJSON(url, toScreen);
 	}
 	
@@ -323,8 +323,26 @@ petFinder.search();
 		//alert(sex);
 	    });
 
-	$('.type').on('click', function(event){
-		animal = '&type='+$(this).val();
+	$('.Bird').on('click', function(event){
+		animal = '&animal=bird';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+	    
+	$('.Dog').on('click', function(event){
+		animal = '&animal=dog';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+	    
+	$('.Cat').on('click', function(event){
+		animal = '&animal=cat';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+	    
+	$('.Rabbit').on('click', function(event){
+		animal = '&animal=rabbit';
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(animal);
 	    });
