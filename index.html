@@ -173,20 +173,39 @@
 			background: #27AE60;
 			color: white;
 		}
+		#photos-wrap {
+  			width: 810px;
+  			margin: 70px auto 40px auto;
+  			position: relative;
+  			z-index: 1;
+		}
+		.photo  {
+  			margin-bottom: 20px;
+  			float: left;
+  			position: relative;
+  			width: 250px;
+  			height: 250px;
+  			border-radius: 5px;
+  			background: white;
+  			padding: 5px;
+  			padding-bottom: 65px;
+  			margin: 5px;
+  			box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+		}
+			
     </style>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
 </head>
 <body>
 	<!-- multistep form -->
-	<form id="msform" method="GET" action="">
+	<form id="msform">
 	<!-- progressbar -->
 	<ul id="progressbar">
-		<li class="active">Location</li>
+		<li class="active">Welcome</li>
 		<li>Type</li>
 		<li>Breed</li>
 		<li>Gender</li>
@@ -194,19 +213,25 @@
 	</ul>
 	<!-- fieldsets -->
 	<fieldset>
+		<h2 class="fs-title">Welcome</h2>
+		<h3 class="fs-title">Team Paw Patrol's Pet Adoption Application</h3>
+		<img src="CatDog.png" width=300 height=300></img>
+		<input type="button" name="next" class="next action-button" value="Find Pets!" />
+	</fieldset>
+	<fieldset>
 		<h2 class="fs-title">Location</h2>
 		<h3 class="fs-subtitle">Where?</h3>
-		<input type="text" class="location" value='' placeholder="Ex: Rohnert Park,CA or 94928"/>
-		<!-- input type="button" name="previous" class="previous action-button" value="Previous" /-->
+		<input type="text" class="location" value='' placeholder="Ex: 94928"/>
+		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
 	<fieldset>
 		<h2 class="fs-title">Type</h2>
 		<h3 class="fs-subtitle">Which type of pet are you looking for?</h3>
-		<input type="button" class="type" value="Dog"/>
-		<input type="button" class="type" value="Cat"/>
-		<input type="button" class="type" value="Rabbit"/>
-		<input type="button" class="type" value="Bird"/>
+		<input type="button" class="Dog" value="Dog"/>
+		<input type="button" class="Cat" value="Cat"/>
+		<input type="button" class="Rabbit" value="Rabbit"/>
+		<input type="button" class="Bird" value="Bird"/>
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
@@ -225,7 +250,7 @@
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
-		<fieldset>
+	<fieldset>
 		<h2 class="fs-title">Age</h2>
 		<h3 class="fs-subtitle"></h3>
 		<input type="button" class="age" name="baby" value="Baby"/>
@@ -235,26 +260,23 @@
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="submit" id="submit" class="submit action-button" value="Submit" />
 	</fieldset>
-	<fieldset id="result" form="msform">
-		
-	</fieldset>
 	<!--fieldset for pet of the day-->
 </form>
+
+<div id="photos-wrap">
+
+</div>
 
 <!-- jQuery -->
 <script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
 <!-- jQuery easing plugin -->
 <script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
-
-
-
-
-</body>
-
-	<script type="text/javascript" >
-
-$( document ).ready(function() {
+<script type="text/javascript" >
+	$( document ).ready(function() {
 		// this loads everything up once the page loads so we can make sure all elements are available before the code runs.
+
+
+
 		
 		//then set all your variables here outside of the function so you can access them and write to them with different 
 		var location = '';
@@ -263,6 +285,10 @@ $( document ).ready(function() {
 		var sex = '';
 		var url = '';
 		var age = '';
+
+
+
+
 		$('.submit').on('click', function(event){
 			//resets the photo element so that you are getting only the selected results
 			$('#msform').html('');
@@ -270,9 +296,16 @@ $( document ).ready(function() {
 		
 (function(){
 	function toScreen(data){
+		console.log(data);
 		$.each(data.petfinder.pets.pet, function(index, photo){
-			$("#msform").append("<fieldset id=\"result\"><h2 class=\"fs-title\">" + photo.name.$t + "</h2><img id=\"imageId\" src = \"" + photo.media.photos.photo[3].$t + "\" alt = \"Paw Patrol Logo\" width = \"300\" height = \"300\" /><input type=\"button\" name=\"previous\" class=\"previous action-button\" value=\"Previous\" /><button type=\"button\" class=\"btn btn-success\" data-toggle=\"collapse\" data-target=\"#demo\"><span class=\"glyphicon glyphicon-collapse-down\"></span>Profile</button><input type=\"button\" name=\"next\" class=\"next action-button\" value=\"Next\" /><div id=\"demo\" class \"collapse\">" + photo.description.$t + "</div></fieldset>");
-
+		 photo = "<div class='photo'>" +
+      	 "<img class='main' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' />" +
+      	 "<p>Name: " + photo.name.$t + "</p>" +
+      	 "<p>Breed: " + photo.breeds.breed.$t + "</p>" +
+      	 "<p>Age: " + photo.age.$t +  "&nbsp&nbsp&nbsp&nbsp&nbspSex: " + photo.sex.$t + "</p>" +
+  		 "</div>";
+		 $('div#photos-wrap').append(photo);
+		 //$("#msform").append("<fieldset><h2 class=\"fs-title\">" + photo.name.$t + "</h2><img src=\"" + photo.media.photos.photo[3].$t + "\" width = \"300\" height = \"300\" /><input type=\"button\" name=\"previous\" class=\"previous action-button\" value=\"Previous\" /><button type=\"button\" class=\"btn btn-success\" data-toggle=\"collapse\" data-target=\"#demo\"><span class=\"glyphicon glyphicon-collapse-down\"></span>Profile</button><input type=\"button\" name=\"next\" class=\"next action-button\" value=\"Next\" /><div id=\"demo\" class \"collapse\">" + photo.description.$t + "</div></fieldset>");
 		});
 	}
 	
@@ -286,11 +319,9 @@ $( document ).ready(function() {
 	petFinder.search = search;
 	
 })();
-
 petFinder.search();
 		});
 		
-
 	$('.age').on('click', function(event){
 		age = '&age='+$(this).val();
 		//alert can be commented, it's just to show that the variable is truly set correctly
@@ -302,44 +333,50 @@ petFinder.search();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(sex);
 	    });
-
-	$('.type').on('click', function(event){
-		animal = '&type='+$(this).val();
+	$('.Bird').on('click', function(event){
+		animal = '&animal=bird';
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(animal);
 	    });
-
+	    
+	$('.Dog').on('click', function(event){
+		animal = '&animal=dog';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+	    
+	$('.Cat').on('click', function(event){
+		animal = '&animal=cat';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
+	    
+	$('.Rabbit').on('click', function(event){
+		animal = '&animal=rabbit';
+		//alert can be commented, it's just to show that the variable is truly set correctly
+		//alert(animal);
+	    });
 	$('.location').on('keyup', function(event){
 		location = '&location='+$(this).val();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(location);
 	    });
-
 	$('.breed').on('keyup', function(event){
 		breed = '&breed='+$(this).val();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(breed);
 	    });
-
-
-
-
      });
-
-
-
-
-
-
+</script>
+</body>
+	<script type="text/javascript" >
 		//jQuery time
 		var current_fs, next_fs, previous_fs; //fieldsets
 		var left, opacity, scale; //fieldset properties which we will animate
 		var animating; //flag to prevent quick multi-click glitches
-
 		$(".next").click(function(){
 			if(animating) return false;
 			animating = true;
-
 			
 	
 			current_fs = $(this).parent();
