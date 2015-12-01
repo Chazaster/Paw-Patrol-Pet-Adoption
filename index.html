@@ -15,10 +15,6 @@
 			height: 100%;
 			/*Image only BG fallback*/
 			background: url('black.jpg');
-			/*background = gradient + image pattern combo*/
-			background: 
-			linear-gradient(rgba(196, 102, 0, 0.2), rgba(155, 89, 182, 0.2)), 
-			url('black.jpg');
 		}
 		body {
 			font-family: montserrat, arial, verdana;
@@ -198,8 +194,7 @@
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    
 
 </head>
 <body>
@@ -263,17 +258,10 @@
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="submit" id="submit" class="submit action-button" value="Submit" />
 	</fieldset>
-	
-
 </form>
 
 <div id="photos-wrap">
 </div>
-
-
-
-
-
 
 <!-- jQuery -->
 <script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
@@ -283,42 +271,32 @@
 	$( document ).ready(function() {
 		// this loads everything up once the page loads so we can make sure all elements are available before the code runs.
 
-
 		var location = '&location=94928';
 		var animal = '';
 		var breed = '';
 		var sex = '';
 		var url = '';
 		var age = '';
-
-
-
-
 		$('.submit').on('click', function(event){
 			//resets the photo element so that you are getting only the selected results
 			$('#msform').html('');
 			var petFinder = {};
-
 			
-		
 (function(){
 	function toScreen(data){
 		console.log(data);
 
 		$.each(data.petfinder.pets.pet, function(index, photo){
 		 photo = "<div class='photo'>" +
-      	 "<img class='main' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' />" +
+      	 "<a href='#' data-featherlight=#mylightbox" + index + "><img class='main' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' /></a>" +
       	 "<p>Name: " + photo.name.$t + "</p>" +
       	 "<p>Breed: " + photo.breeds.breed.$t + "</p>" +
       	 "<p>Age: " + photo.age.$t +  "&nbsp&nbsp&nbsp&nbsp&nbspSex: " + photo.sex.$t + "</p>" +
-  		 "</div>";
-  		 
+      	 "<div id=mylightbox" + index +  "><img src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' />" +
+      	 "<p>Description: " + photo.description.$t + "</p></div>" +
+      	 "</div>";
 		 $('div#photos-wrap').append(photo);
-		 $('div#photos-wrap').featherlight(photo, 'click')
-		 	
-
-		 
-		 //$("#msform").append("<fieldset><h2 class=\"fs-title\">" + photo.name.$t + "</h2><img src=\"" + photo.media.photos.photo[3].$t + "\" width = \"300\" height = \"300\" /><input type=\"button\" name=\"previous\" class=\"previous action-button\" value=\"Previous\" /><button type=\"button\" class=\"btn btn-success\" data-toggle=\"collapse\" data-target=\"#demo\"><span class=\"glyphicon glyphicon-collapse-down\"></span>Profile</button><input type=\"button\" name=\"next\" class=\"next action-button\" value=\"Next\" /><div id=\"demo\" class \"collapse\">" + photo.description.$t + "</div></fieldset>");
+		 //$('div#photos-wrap').featherlight(photo, 'click')
 		});
 	}
 	
@@ -392,7 +370,6 @@ petFinder.search();
 		$(".next").click(function(){
 			if(animating) return false;
 			animating = true;
-			
 	
 			current_fs = $(this).parent();
 			next_fs = $(this).parent().next();
