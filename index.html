@@ -189,7 +189,10 @@
   			margin: 5px;
   			box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 		}
-			
+		
+		#lightboximage {
+			padding-right:10px;
+		}	
     </style>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -226,17 +229,18 @@
 	<fieldset>
 		<h2 class="fs-title">Type</h2>
 		<h3 class="fs-subtitle">Which type of pet are you looking for?</h3>
-		<input type="button" class="Dog" value="Dog"/>
-		<input type="button" class="Cat" value="Cat"/>
-		<input type="button" class="Rabbit" value="Rabbit"/>
-		<input type="button" class="Bird" value="Bird"/>
+		<input type="button" class="Dog" value="Dog" onclick="setOptions('Dog')"/>
+		<input type="button" class="Cat" value="Cat" onclick="setOptions('Cat')"/>
+		<input type="button" class="Rabbit" value="Rabbit" onclick="setOptions('Rabbit')"/>
+		<input type="button" class="Bird" value="Bird" onclick="setOptions('Bird')"/>
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
 	<fieldset>
 		<h2 class="fs-title">Breed</h2>
 		<h3 class="fs-subtitle">What breed?</h3>
-		<input type="text" class="breed" value='' placeholder="Breed"/>
+		<select class="breed" name="list1" id="list1"></select>
+		</br>
 		<input type="button" name="previous" class="previous action-button" value="Previous" />
 		<input type="button" name="next" class="next action-button" value="Next" />
 	</fieldset>
@@ -287,20 +291,30 @@
 		console.log(data);
 
 		$.each(data.petfinder.pets.pet, function(index, photo){
-		 photo = "<div class='photo'>" +
-      	 "<a href='#' data-featherlight=#mylightbox" + index + "><img class='main' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' /></a>" +
-      	 "<p>Name: " + photo.name.$t + "</p>" +
-      	 "<p>Breed: " + photo.breeds.breed.$t + "</p>" +
-      	 "<p>Age: " + photo.age.$t +  "&nbsp&nbsp&nbsp&nbsp&nbspSex: " + photo.sex.$t + "</p>" +
-      	 "<div hidden id=mylightbox" + index +  "><img src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' />" +
-      	 //if (photo.media.photos.photo.length > 6){
-      	 //	+ "<img src='" + photo.media.photos.photo[7].$t + "' width='250' height='250' />"} +
-      	 "<p>Description: " + photo.description.$t + "</p>" +
-      	 "<p>Email: " + photo.contact.email.$t + "</p>" + 
-      	 "<p>Phone: " + photo.contact.phone.$t + "</p></div>" +
-      	 "<p>Description: " + photo.description.$t + "</p></div>" +
-      	 "</div>";
-		 $('div#photos-wrap').append(photo);
+			var arr = [];
+		 	$.each(photo.media.photos.photo, function (ind, pho){
+		 		if (ind == 7 || ind == 12){
+		 			arr.push(pho.$t);
+		 		}
+		 	});
+		 	var photos = "<div class='photo'>" +
+      	 	"<a href='#' data-featherlight=#mylightbox" + index + "><img class='main' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' /></a>" +
+      	 	"<p>Name: " + photo.name.$t + "</p>" +
+      	 	"<p>Breed: " + photo.breeds.breed.$t + "</p>" +
+      	 	"<p>Age: " + photo.age.$t +  "&nbsp&nbsp&nbsp&nbsp&nbspSex: " + photo.sex.$t + "</p>" +
+      	 	"<div hidden id=mylightbox" + index +  "><img id='lightboximage' src='" + photo.media.photos.photo[2].$t + "' width='250' height='250' />";
+      	 	if (arr.length == 2){
+      	 		photos += "<img id='lightboximage' src='" + arr[0] + "' width='250' height='250' />" +
+      	 		"<img id='lightboximage' src='" + arr[1] + "' width='250' height='250' />";
+      	 		
+      	 	}
+      	 	else if (arr.length == 1){
+      	 		photos += "<img src='" + arr[0] + "' width='250' height='250' />";
+      	 	}
+      	 	photos += "<p>Description: <br />" + photo.description.$t + "</p><br />" +
+      	 	"<p>Email: " + photo.contact.email.$t + "</p>" + 
+      	 	"<p>Phone: " + photo.contact.phone.$t + "</p></div>";
+		 	$('div#photos-wrap').append(photos);
 		});
 	}
 	
@@ -356,7 +370,7 @@ petFinder.search();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(location);
 	    });
-	$('.breed').on('keyup', function(event){
+	$('.breed').on('change', function(event){
 		breed = '&breed='+$(this).val();
 		//alert can be commented, it's just to show that the variable is truly set correctly
 		//alert(breed);
@@ -368,6 +382,176 @@ petFinder.search();
 </body>
 	<script type="text/javascript" >
 		//jQuery time
+			var dogs = [ "Affenpinscher", "Afghan Hound", "Airedale Terrier", "Akbash","Akita", "Alaskan Malamute","American Bulldog", "American Eskimo Dog","American Hairless Terrier","American Staffordshire Terrier", "American Water Spaniel","Anatolian Shepherd","Appenzell Mountain Dog", "Australian Cattle Dog (Blue Heeler)","Australian Kelpie", "Australian Shepherd","Australian Terrier","Basenji","Basset Hound",
+               "Beagle","Bearded Collie","Beauceron","Bedlington Terrier","Belgian Shepherd Dog Sheepdog",
+               "Belgian Shepherd Laekenois","Belgian Shepherd Malinois","Belgian Shepherd Tervuren",
+				"Bernese Mountain Dog","Bichon Frise","Black Labrador Retriever","Black Mouth Cur","Black Russian Terrier","Black And Tan Coonhound",
+"Bloodhound","Blue Lacy","Bluetick Coonhound","Boerboel","Bolognese","Border Collie","Border Terrier","Borzoi","Boston Terrier","Bouvier Des Flanders","Boxer","Boykin Spaniel","Briard","Brittany Spaniel","Brussels Griffon", "Bull Terrier","Bullmastiff","Cairn Terrier","Canaan Dog","Cane Corso Mastiff","Carolina Dog","Catahoula Leopard Dog","Cattle Dog","Caucasian Sheepdog (Caucasian Ovtcharka)",
+"Cavalier King Charles Spaniel","Chesapeake Bay Retriever","Chihuahua","Chinese Crested Dog","Chinese Foo Dog","Chinook","Chocolate Labrador Retriever","Chow Chow","Cockapoo","Cocker Spaniel","Collie","Coonhound",
+"Corgi", "Coton De Tulear","Curly-Coated Retriever","Dachshund","Dalmatian","Dandi Dinmont Terrier","Doberman Pinscher","Dogo Argentino","Dogue De Bordeaux","Dutch Shepherd","English Bulldog","English Cocker Spaniel", 
+"English Coonhound","English Pointer","English Setter","English Shepherd","English Springer Spaniel","English Toy Spaniel","Entlebucher","Eskimo Dog","Feist",
+"Field Spaniel",
+"Fila Brasileiro",
+"Finnish Lapphund",
+"Finnish Spitz",
+"Flat-Coated Retriever",
+"Fox Terrier",
+"Foxhound",
+"French Bulldog",
+"Galgo Spanish Greyhound",
+"German Pinscher",
+"German Shepherd Dog",
+"German Shorthaired Pointer",
+"German Spitz",
+"German Wirehaired Pointer",
+"Giant Schnauzer",
+"Glen Of Imaal Terrier",
+"Golden Retriever",
+"Gordon Setter",
+"Great Dane",
+"Great Pyrenees",
+"Greater Swiss Mountain Dog",
+"Greyhound",
+"Harrier",
+"Havanese",
+"Hound",
+"Hovawart",
+"Husky",
+"Ibizan Hound",
+"Icelandic Sheepdog",
+"Illyrian Sheepdog",
+"Irish Setter",
+"Irish Terrier",
+"Irish Water Spaniel",
+"Irish Wolfhound",
+"Italian Greyhound",
+"Italian Spinone",
+"Jack Russell Terrier",
+"Jack Russell Terrier (Parson Russell Terrier)",
+"Japanese Chin",
+"Jindo",
+"Kai Dog",
+"Karelian Bear Dog",
+"Keeshond",
+"Kerry Blue Terrier",
+"Kishu",
+"Klee Kai",
+"Komondor",
+"Kuvasz",
+"Kyi Leo",
+"Labrador Retriever",
+"Lakeland Terrier",
+"Lancashire Heeler",
+"Leonberger",
+"Lhasa Apso",
+"Lowchen",
+"Maltese",
+"Manchester Terrier",
+"Maremma Sheepdog",
+"Mastiff",
+"McNab",
+"Miniature Pinscher",
+"Mountain Cur",
+"Mountain Dog",
+"Munsterlander",
+"Neapolitan Mastiff",
+"New Guinea Singing Dog",
+"Newfoundland Dog",
+"Norfolk Terrier",
+"Norwegian Buhund",
+"Norwegian Elkhound",
+"Norwegian Lundehund",
+"Norwich Terrier",
+"Nova Scotia Duck-Tolling Retriever",
+"Old English Sheepdog",
+"Otterhound",
+"Papillon",
+"Patterdale Terrier (Fell Terrier)",
+"Pekingese",
+"Peruvian Inca Orchid",
+"Petit Basset Griffon Vendeen",
+"Pharaoh Hound",
+"Pit Bull Terrier",
+"Plott Hound",
+"Podengo Portugueso",
+"Pointer",
+"Polish Lowland Sheepdog",
+"Pomeranian",
+"Poodle",
+"Portuguese Water Dog",
+"Presa Canario",
+"Pug",
+"Puli",
+"Pumi",
+"Rat Terrier",
+"Redbone Coonhound",
+"Retriever",
+"Rhodesian Ridgeback",
+"Rottweiler",
+"Saint Bernard St. Bernard",
+"Saluki",
+"Samoyed",
+"Sarplaninac",
+"Schipperke",
+"Schnauzer",
+"Scottish Deerhound",
+"Scottish Terrier Scottie",
+"Sealyham Terrier",
+"Setter",
+"Shar Pei",
+"Sheep Dog",
+"Shepherd",
+"Shetland Sheepdog Sheltie",
+"Shiba Inu",
+"Shih Tzu",
+"Siberian Husky",
+"Silky Terrier",
+"Skye Terrier",
+"Sloughi",
+"Smooth Fox Terrier",
+"South Russian Ovtcharka",
+"Spaniel",
+"Spitz",
+"Staffordshire Bull Terrier",
+"Standard Poodle",
+"Sussex Spaniel",
+"Swedish Vallhund",
+"Terrier",
+"Thai Ridgeback",
+"Tibetan Mastiff",
+"Tibetan Spaniel",
+"Tibetan Terrier",
+"Tosa Inu",
+"Toy Fox Terrier",
+"Treeing Walker Coonhound",
+"Vizsla",
+"Weimaraner",
+"Welsh Corgi",
+"Welsh Springer Spaniel",
+"Welsh Terrier",
+"West Highland White Terrier Westie",
+"Wheaten Terrier",
+"Whippet",
+"White German Shepherd",
+"Wire Fox Terrier",
+"Wire-Haired Pointing Griffon",
+"Wirehaired Terrier",
+"Xoloitzcuintle (Mexican Hairless)",
+"Yellow Labrador Retriever",
+"Yorkshire Terrier Yorkie"];
+		var cats = ["Abyssinian", "American Curl", "American Shorthair", "American Wirehair", "Applehead Siamese", "Balinese","Bengal", "Birman", "Bobtail", "Bombay", "British Shorthair", "Burmese", "Burmilla",
+		"Calico", "Canadian Hairless", "Chartreux","Chausie","Chinchilla", "Cornish Rex","Cymric", "Devon Rex","Dilute Calico","Dilute Tortoiseshell", "Domestic Long Hair", "Domestic Medium Hair",
+		"Domestic Short Hair", "Egyptian Mau","Exotic Shorthair", "Extra-Toes Cat (Hemingway Polydactyl)","Havana","Himalayan","Japanese Bobtail","Javanese","Korat","LaPerm","Maine Coon",
+		"Manx","Munchkin","Nebelung","Norwegian Forest Cat","Ocicat","Oriental Long Hair","Oriental Short Hair","Oriental Tabby","Persian","Pixie-Bob","Ragamuffin","Ragdoll","Russian Blue","Scottish Fold",
+		"Selkirk Rex","Siamese","Siberian","Silver","Singapura","Snowshoe","Somali","Sphynx (Hairless Cat)","Tabby","Tiger","Tonkinese","Torbie","Tortoiseshell","Turkish Angora","Turkish Van","Tuxedo"];
+		var rabbits = [
+		"American","American Fuzzy Lop","American Sable","Angora Rabbit","Belgian Hare","Beveren","Britannia Petite","Bunny Rabbit","Californian","Champagne D'Argent","Checkered Giant","Chinchilla","Cinnamon",
+		"Creme D'Argent","Dutch","Dwarf","Dwarf Eared","English Lop","English Spot","Flemish Giant","Florida White","French-Lop","Harlequin","Havana","Himalayan","Holland Lop","Hotot","Jersey Wooly",
+		"Lilac","Lionhead","Lop Eared","Mini Rex","Mini-Lop","Netherland Dwarf","New Zealand","Palomino","Polish","Rex","Rhinelander","Satin","Silver","Silver Fox","Silver Marten","Tan"];
+		var birds = ["African Grey","Amazon","Brotogeris","Budgie/Budgerigar","Button Quail","Caique","Canary","Chicken","Cockatiel","Cockatoo","Conure","Dove","Duck","Eclectus","Emu","Finch","Goose","Guinea Fowl",
+		"Kakariki","Lory/Lorikeet","Lovebird","Macaw","Ostrich","Parakeet (Other)","Parrot (Other)","Parrotlet","Peacock/Pea Fowl","Pheasant","Pigeon","Pionus","Poicephalus/Senegal","Quail","Quaker Parakeet",
+		"Rhea","Ringneck/Psittacula","Rosella","Swan","Toucan","Turkey"];
+		
 		var current_fs, next_fs, previous_fs; //fieldsets
 		var left, opacity, scale; //fieldset properties which we will animate
 		var animating; //flag to prevent quick multi-click glitches
@@ -439,37 +623,26 @@ petFinder.search();
 				easing: 'easeInOutBack'
 			});
 		});
-		$(".submit").click(function(){
-   			if(animating) return false;
-			animating = true;
-	
-			current_fs = $(this).parent();
-			next_fs = $(this).parent().next();
-	
-			//show the next fieldset
-			next_fs.show(); 
-			//hide the current fieldset with style
-			current_fs.animate({opacity: 0}, {
-				step: function(now, mx) {
-					//as the opacity of current_fs reduces to 0 - stored in "now"
-					//1. scale current_fs down to 80%
-					scale = 1 - (1 - now) * 0.2;
-					//2. bring next_fs from the right(50%)
-					left = (now * 50)+"%";
-					//3. increase opacity of next_fs to 1 as it moves in
-					opacity = 1 - now;
-					current_fs.css({'transform': 'scale('+scale+')'});
-					next_fs.css({'left': left, 'opacity': opacity});
-				}, 
-				duration: 800, 
-				complete: function(){
-					current_fs.hide();
-					animating = false;
-				}, 
-				//this comes from the custom easing plugin
-				easing: 'easeInOutBack'
-			});
-		});
+		function setOptions(matchWith){
+  			var choices = [];
+  			var sel = document.getElementById('list1');
+  			var tmp = '';
+  			sel.options.length = 0;
+  			switch (matchWith) {
+    			case 'Dog' : choices = dogs.slice(0); break;
+    			case 'Cat' : choices = cats.slice(0); break;
+    			case 'Rabbit' : choices = rabbits.slice(0); break;
+    			case 'Bird' : choices = birds.slice(0); break;
+    			//case '' : choices = [].concat(choicesOLD,choicesNEW,choicesOLDNEW); break;
+  			}
+  		for (i=0; i<choices.length; i++) {  
+    		tmp = choices[i];
+    		tmp.value = choices[i];
+    		sel.options[sel.options.length] = new Option(tmp,tmp,false,false);
+  		}
+		}
+		window.onload = function () { setOptions(''); }
+
 	</script>
 	
 </html>
