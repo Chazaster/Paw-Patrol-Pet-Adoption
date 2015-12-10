@@ -402,6 +402,9 @@
 		 					$('div#photos-wrap').append(photos);
 		 					lightIndex++;
 						}});
+
+				//window delete('url');
+
 					alert(lastOffSet);
 					if (lastOffSet % 100 == 0){
 						document.getElementById("more").removeAttribute("hidden");
@@ -413,14 +416,14 @@
 				function search(){		
 		 			url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + count + "&callback=?";
 		 			//alert can be commented, it's just to show that the variable is truly set correctly
-		 			alert(url);
+		 			//alert(url);
 					$.getJSON(url, toScreen);
 				}
 	
 				$("#more").on("click", function(event) {
 		 			url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + count + offset + "&callback=?";
 		 			//alert can be commented, it's just to show that the variable is truly set correctly
-		 			alert(url);
+		 			//alert(url);
 					$.getJSON(url, toScreen);
 				});
 
@@ -431,9 +434,19 @@
 					$('#searchAgain').show();
 					url = "http://api.petfinder.com/pet.find?format=json&key=326aa49dbfec3060d0ebec0d9ff3359b" + location + animal + breed + sex + age + count + "&callback=?";
 		 			//alert can be commented, it's just to show that the variable is truly set correctly
-		 			alert(url);
+		 			//alert(url);
 					$.getJSON(url, toScreen);
+					loaction='&location=94928';
+					animal='';
+					breed='';
+					sex='';
+					age='';
+					count='&count=100';
+					offset='';
+
 				});
+
+
 	
 			petFinder.search = search;
 			})();
