@@ -53,12 +53,9 @@
 			border-radius: 3px;
 			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
 			padding: 15px 30px;
-	
 			box-sizing: border-box;
 			width: 80%;
 			margin: 0 10%;
-	
-			/*stacking fieldsets above each other*/
 			position: relative;
 		}
 		#searchAgain .action-button {
@@ -83,13 +80,13 @@
 			padding: 10px 5px;
 			margin: 10px 5px;
 		}
-		}
+		
 		#searchAgain input, #searchAgain textarea {
-			padding: 15px;
+			padding: 5px;
 			border: 1px solid #ccc;
 			border-radius: 3px;
-			margin-bottom: 10px;
-			width: 30%;
+			margin-bottom: 5px;
+			width: 15%;
 			box-sizing: border-box;
 			font-family: montserrat;
 			color: #27AE60;
@@ -192,7 +189,7 @@
 		}
 		#photos-wrap {
   			width: 810px;
-  			margin: 70px auto 40px auto;
+  			margin: 30px auto 40px auto;
   			padding-left: 18.5%;
   			position: relative;
   			z-index: 1;
@@ -320,18 +317,19 @@
 </form>
 <form hidden id="searchAgain">
     	<fieldset>
+    		<h2 class="fs-title">Search Again</h2>
 			<input type="text" class="location" value='' placeholder="Ex: 94928"/>
 			
 			<input type="button" class="Dog" value="Dog" onclick="setOptions('Dog')"/>
 			<input type="button" class="Cat" value="Cat" onclick="setOptions('Cat')"/>
 			<input type="button" class="Rabbit" value="Rabbit" onclick="setOptions('Rabbit')"/>
 			<input type="button" class="Bird" value="Bird" onclick="setOptions('Bird')"/>
-			
+			</br>
 			<select class="breed" name="list1" id="list1" size="4"></select>
-			
+			</br>
 			<input type="button" class="sex" value="M"/>
 			<input type="button" class="sex" value="F"/>
-
+			</br>
 			<input type="button" class="age" name="baby" value="Baby"/>
 			<input type="button" class="age"name="young" value="Young"/>
 			<input type="button" class="age"name="adult" value="Adult"/>
